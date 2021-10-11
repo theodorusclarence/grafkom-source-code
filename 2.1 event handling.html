@@ -1,0 +1,36 @@
+
+<html>
+    <head>
+        <title>Events</title>      
+    </head>
+    <body>
+        <div id="demo"></div>
+    </body> 
+</html>
+
+<script> 
+    let onMouseClick = function(e) {
+        //console.log("Hello");
+        document.getElementById("demo").innerHTML = "mouse click";
+    };
+    
+    let onMouseLeave = function(e) {
+        //console.log("out");
+        document.getElementById("demo").innerHTML = "mouse out";
+    };
+    let onMouseMove = function(e) {
+        //console.log("mouse move");
+        document.getElementById("demo").innerHTML = "mouse move";
+    };
+    let onKeyDown = function(e) {
+        //console.log("key down");
+        document.getElementById("demo").innerHTML = "key down";
+    };
+    
+    document.addEventListener("click", onMouseClick, false);
+    document.addEventListener("mouseleave", onMouseLeave, false);
+    document.addEventListener("mousemove", onMouseMove, false);
+    document.addEventListener("keydown", onKeyDown, false);
+     
+    
+</script>
