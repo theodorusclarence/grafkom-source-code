@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shadow</title>
+    <script src = "js/three.min.js"></script>     
+</head>
+<body>
+    
+</body>
+</html>
+
+<script>
+
+	let scene, camera, renderer, cube,  spotLight, plane;
+	let player = { height:1.8, speed:0.2, turnSpeed:Math.PI*0.02 };
+    let ADD = 0.01, theta = 0;	
+
+	let createGeometry = function() {
+
+        let geometry = new THREE.BoxGeometry(1,1,1);
+        let material = new THREE.MeshPhongMaterial({color:0xff4444});
+        cube = new THREE.Mesh(geometry, material);
+        cube.position.set(0, 1, 0);
+        cube.castShadow = true;
+        cube.receiveShadow = true;		
+		scene.add(cube);
+	
+		
+		
+		geometry = 	new THREE.PlaneGeometry(10,10, 10,10);
+		material = new THREE.MeshPhongMaterial({color:0xffffff});
+		plane = new THREE.Mesh(geometry, material);
+		plane.rotation.x -= Math.PI / 2;
+		plane.receiveShadow = true;
+		scene.add(plane);		
+
+	}
+
+	let init = function() {
+		scene = new THREE.Scene();
+		camera = new THREE.PerspectiveCamera(90, 1280/720, 0.1, 1000);
+		
+
+		
+		
+		// LIGHTS
+		ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+		scene.add(ambientLight);
+		
+		light = new THREE.PointLight(0xffffff, 0.8, 18);
+		light.position.set(-3,6,-3);
+		light.castShadow = true;
+		// Will not light anything closer than 0.1 units or further than 25 units
+		light.shadow.camera.near = 0.1;
+		light.shadow.camera.far = 25;
+		scene.add(light);
+		
+		createGeometry();
+
+		camera.position.set(0, player.height, -5);
+		camera.lookAt(new THREE.Vector3(0,player.height,0));
+		
+		renderer = new THREE.WebGLRenderer(); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
+		
+		document.body.appendChild(renderer.domElement);
+	
+		
+	}
+
+	    // main animation loop - calls 50-60 times per second.
+	let mainLoop = function() {
+		
+	
+        cube.rotation.x += ADD;
+        cube.rotation.y += ADD;	
+		
+        renderer.render(scene, camera);
+        requestAnimationFrame(mainLoop);
+    };
+
+    init();
+    mainLoop();
+    
+</script>
